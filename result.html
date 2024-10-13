@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>測驗結果 - 人際關係心理測驗</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>測驗結果</h1>
+        <p>根據你的回答，以下是你的測驗結果：</p>
+    </header>
+    <main>
+        <section id="result-container">
+            <h2>你的結果：</h2>
+            <p id="result-text"></p>
+            <button id="restart-btn">重新測驗</button>
+        </section>
+    </main>
+    <footer>
+        <p>聯絡我：<a href="mailto:your.email@example.com">your.email@example.com</a></p>
+    </footer>
+
+    <script>
+        // 獲取URL參數
+        const urlParams = new URLSearchParams(window.location.search);
+        const answers = [];
+        for(let i=1; i<=10; i++) {
+            const answer = urlParams.get(`q${i}`);
+            if(answer) {
+                answers.push(answer);
+            }
+        }
+
+        // 計算分數
+        const score = {
+            A: 0,
+            B: 0,
+            C: 0,
+            D: 0
+        };
+
+        answers.forEach(answer => {
+            if(score.hasOwnProperty(answer)) {
+                score[answer]++;
+            }
+        });
+
+        // 找出最高分
+        let maxScore = 0;
+        let dominant = '';
+        for (const [key, value] of Object.entries(score)) {
+            if (value > maxScore) {
+                maxScore = value;
+                dominant = key;
+            }
+        }
+
+        // 根據最高分顯示結果
+        const resultText = document.getElementById('result-text');
+        let resultMessage = '';
+        switch(dominant) {
+            case 'A':
+                resultMessage = "你在人際互動中比較主動，喜歡表達自己的意見，但有時可能會顯得強勢。";
+                break;
+            case 'B':
+                resultMessage = "你在人際互動中尋求平衡，努力找到折衷方案，能夠適應不同的情況。";
+                break;
+            case 'C':
+                resultMessage = "你在人際互動中較為被動，傾向於避免衝突，注重和諧。";
+                break;
+            case 'D':
+                resultMessage = "你在人際互動中較為獨立，不太依賴他人，重視個人空間。";
+                break;
+            default:
+                resultMessage = "你的測驗結果有些複雜，請重新測試。";
+        }
+
+        resultText.textContent = resultMessage;
+
+        // 重新測驗按鈕
+        const restartBtn = document.getElementById('restart-btn');
+        restartBtn.addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
